@@ -22,7 +22,7 @@ const RecordTab: React.FC<RecordTabProps> = ({
     browserSupportsSpeechRecognition,
     dispatchRecord,
 }) => {
-    const { title, desc, body } = useNote();
+    const { title, desc, keypoints, body } = useNote();
 
     if (!browserSupportsSpeechRecognition) {
         <div className="flex items-center align-middle">
@@ -56,6 +56,8 @@ const RecordTab: React.FC<RecordTabProps> = ({
                             <h3 className="text-2xl font-semibold tracking-tight">{title ? title : "Untitled"}</h3>
                             <h5 className="text-lg font-semibold tracking-tight">Summary</h5>
                             <p className="text-sm">{`${desc}\n`}</p>
+                            <h5 className="text-lg font-semibold tracking-tight">Key points</h5>
+                            <p className="text-sm">{`${keypoints.join("\n")}\n`}</p>
                             <h5 className="text-lg font-semibold tracking-tight">Content</h5>
                             <p className="text-sm leading-6 font-normal">
                                 {body ? body : "Your compiled notes will appear here after you stop recording."}
@@ -63,20 +65,6 @@ const RecordTab: React.FC<RecordTabProps> = ({
                         </div>
                     </TabsContent>
                 </Tabs>
-                {/* <div className="grow-[3] rounded-md bg-background relative flex flex-col overflow-auto">
-                    <div className="flex justify-between items-center">
-                        <Button variant="ghost" className="p-2 h-6 bg-background my-2 ml-4 rounded-md">
-                            Output
-                        </Button>
-                        <Button variant="ghost" className="p-0 w-6 h-6 mr-4">
-                            <Clipboard className="size-3" />
-                        </Button>
-                    </div>
-                    <div className="w-full *:w-full px-6 pt-2 last:mb-4 h-full">
-                        <h3 className="text-2xl font-semibold tracking-tight pb-3">{title}</h3>
-                        <p className="text-sm leading-6 font-normal">{transcript}</p>
-                    </div>
-                </div> */}
             </div>
         </div>
     );

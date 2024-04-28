@@ -27,6 +27,7 @@ interface GalleryItem {
     createdAt: string;
     desc?: string;
     body: string;
+    keypoints?: string[];
 }
 
 interface GalleryListProps {
@@ -56,7 +57,7 @@ const galleryColumnMap: { [key: string]: any } = {
         return s || "N/A";
     },
 };
-const transformColumn = (col: string, v: string | number | undefined) => {
+const transformColumn = (col: string, v: string | number | undefined | string[]) => {
     if (col in galleryColumnMap) {
         return galleryColumnMap[col](v);
     }
@@ -137,7 +138,7 @@ const GalleryList: React.FC<GalleryListProps> = ({ items, isLoading }) => {
                             onClick={() =>
                                 download(
                                     validItemClicked ? items[itemClicked].title : "Untitled",
-                                    validItemClicked ? items[itemClicked].body : "Empty."
+                                    validItemClicked ? `${items[itemClicked].keypoints ? `Key points: \n${(items[itemClicked].keypoints || []).join("\n") }\n`: ""}${items[itemClicked].body}` : "Empty.",
                                 )
                             }
                         >

@@ -2,7 +2,7 @@ import prisma from "@/libs/prismadb";
 
 export async function POST(req: Request) {
     try {
-        const { title, lecture, quarter, professor, course, desc, body } = await req.json();
+        const { title, lecture, quarter, professor, course, desc, body, keypoints } = await req.json();
 
         const note = await prisma.note.create({
             data: {
@@ -13,6 +13,7 @@ export async function POST(req: Request) {
                 course,
                 desc,
                 body,
+                keypoints
             },
         });
 
