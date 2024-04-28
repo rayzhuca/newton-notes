@@ -35,16 +35,7 @@ const SignupView = () => {
                 title: "Account created",
             });
 
-            const res = await signIn("credentials", {
-                email,
-                password,
-            });
-
-            if (!res?.ok) {
-                throw new Error("Unsuccessful signin");
-            }
-
-            router.push("/dashboard");
+            router.push("/login");
         } catch (error: any) {
             console.log(error);
             let toastParams = toastErrorAction(() => onSubmit());
