@@ -19,6 +19,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useState } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
+import BoldedText from "@/libs/bolded-text";
 
 interface GalleryItem {
     title: string;
@@ -143,18 +144,31 @@ const GalleryList: React.FC<GalleryListProps> = ({ items, isLoading }) => {
                           ))}
                 </TableBody>
             </Table>
-            <Dialog open={dialogOpen} onOpenChange={() => setDialogOpen(false)}>
+            <Dialog
+                open={dialogOpen}
+                onOpenChange={() => {
+                    setDialogOpen(false);
+                }}
+            >
                 <DialogContent className="sm:w-1/2">
                     <DialogHeader>
                         <DialogTitle>{validItemClicked ? items[itemClicked].title : "Untitled"}</DialogTitle>
-                        <DialogDescription className="pt-2 whitespace-pre-line">{validItemClicked ? items[itemClicked].body : "Empty"}</DialogDescription>
+                        <DialogDescription className="pt-2 whitespace-pre-line" asChild>
+                            {<BoldedText text={validItemClicked ? items[itemClicked].body : "Empty"} />}
+                        </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
                         <Button
                             onClick={() =>
                                 download(
                                     validItemClicked ? items[itemClicked].title : "Untitled",
-                                    validItemClicked ? `${items[itemClicked].keypoints ? `Key points: \n${(items[itemClicked].keypoints || []).join("\n") }\n`: ""}${items[itemClicked].body}` : "Empty.",
+                                    validItemClicked
+                                        ? `${
+                                              items[itemClicked].keypoints
+                                                  ? `Key points: \n${(items[itemClicked].keypoints || []).join("\n")}\n`
+                                                  : ""
+                                          }${items[itemClicked].body}`
+                                        : "Empty."
                                 )
                             }
                         >
