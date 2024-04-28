@@ -23,7 +23,6 @@ async function main() {
                 professor: makeid(10),
                 course: makeid(10),
                 body: makeid(10),
-                userId: "662a82307b1569cbef460c98",
             },
         });
     }

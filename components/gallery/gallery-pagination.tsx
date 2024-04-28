@@ -15,7 +15,7 @@ const GalleryPagination: React.FC<GalleryPaginationProps> = ({ maxPages }) => {
         <Pagination>
             <PaginationContent>
                 <PaginationItem>
-                    <Button onClick={() => decreasePage()} className="w-10 p-3" variant="outline" disabled={page === 1}>
+                    <Button onClick={decreasePage} className="w-10 p-3" variant="outline" disabled={page === 1}>
                         <ChevronLeft />
                     </Button>
                 </PaginationItem>
@@ -25,7 +25,7 @@ const GalleryPagination: React.FC<GalleryPaginationProps> = ({ maxPages }) => {
                     </PaginationLink>
                 </PaginationItem>
                 <PaginationItem>
-                    <Button onClick={increasePage} className="w-10 p-3" variant="outline" disabled={page === maxPages}>
+                    <Button onClick={increasePage} className="w-10 p-3" variant="outline" disabled={page >= maxPages}>
                         <ChevronRight />
                     </Button>
                 </PaginationItem>

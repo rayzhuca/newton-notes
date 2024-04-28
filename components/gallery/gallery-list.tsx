@@ -5,14 +5,28 @@ import { Button } from "../ui/button";
 import GalleryPagination from "./gallery-pagination";
 import usePage from "@/hooks/usePage";
 import { Skeleton } from "../ui/skeleton";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "../ui/dialog";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { useState } from "react";
 
 interface GalleryItem {
     title: string;
     course: string;
     lecture: number;
     professor: string;
-    year: string;
-    description: string;
+    createdAt: string;
+    desc?: string;
+    body: string;
 }
 
 interface GalleryListProps {
@@ -22,11 +36,51 @@ interface GalleryListProps {
 
 type GalleryItemProp = keyof GalleryItem;
 
-const galleryColumns: GalleryItemProp[] = ["title", "course", "professor", "year", "description"];
+const galleryColumns: GalleryItemProp[] = ["title", "course", "professor", "createdAt", "desc"];
+const galleryColumnDisplay: { [key: string]: string } = {
+    title: "Title",
+    course: "Course",
+    professor: "Professor",
+    createdAt: "Created",
+    desc: "Description",
+};
+const galleryColumnMap: { [key: string]: any } = {
+    createdAt: (s: string) => {
+        return new Date(s).toLocaleDateString("en-gb", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
+    },
+    desc: (s: string | undefined) => {
+        return s || "N/A";
+    },
+};
+const transformColumn = (col: string, v: string | number | undefined) => {
+    if (col in galleryColumnMap) {
+        return galleryColumnMap[col](v);
+    }
+    return v;
+};
+
+const download = (filename: string, text: string) => {
+    const element = document.createElement("a");
+    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+    element.setAttribute("download", filename);
+    element.style.display = "none";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+};
 
 const GalleryList: React.FC<GalleryListProps> = ({ items, isLoading }) => {
     const { page } = usePage();
     const itemsPerPage = 5;
+
+    const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+    const [itemClicked, setItemClicked] = useState<number>(0);
+
+    const validItemClicked = itemClicked >= 0 && itemClicked < items?.length;
 
     items = items || [];
     return (
@@ -36,7 +90,7 @@ const GalleryList: React.FC<GalleryListProps> = ({ items, isLoading }) => {
                     <TableRow>
                         {galleryColumns.map((v, i) => (
                             <TableHead key={i} className={"first:pl-8 last:pr-8 capitalize hover:bg-inherit"}>
-                                {v}
+                                {galleryColumnDisplay[v]}
                             </TableHead>
                         ))}
                     </TableRow>
@@ -57,14 +111,41 @@ const GalleryList: React.FC<GalleryListProps> = ({ items, isLoading }) => {
                         : items.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((v, i) => (
                               <TableRow key={i}>
                                   {galleryColumns.map((col, k) => (
-                                      <TableCell key={k} className="first:pl-8">
-                                          {v[col]}
+                                      <TableCell
+                                          onClick={() => {
+                                              setDialogOpen(true);
+                                              setItemClicked((page - 1) * itemsPerPage + i);
+                                          }}
+                                          key={k}
+                                          className="first:pl-8 h-8"
+                                      >
+                                          {transformColumn(col, v[col])}
                                       </TableCell>
                                   ))}
                               </TableRow>
                           ))}
                 </TableBody>
             </Table>
+            <Dialog open={dialogOpen} onOpenChange={() => setDialogOpen(false)}>
+                <DialogContent className="sm:w-1/2">
+                    <DialogHeader>
+                        <DialogTitle>{validItemClicked ? items[itemClicked].title : "Untitled"}</DialogTitle>
+                        <DialogDescription className="pt-2">{validItemClicked ? items[itemClicked].body : "Empty"}</DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button
+                            onClick={() =>
+                                download(
+                                    validItemClicked ? items[itemClicked].title : "Untitled",
+                                    validItemClicked ? items[itemClicked].body : "Empty."
+                                )
+                            }
+                        >
+                            Download
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
             <GalleryPagination maxPages={items.length / 5} />
         </div>
     );

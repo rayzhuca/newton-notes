@@ -5,7 +5,7 @@ import "regenerator-runtime/runtime";
 import Navigation from "@/components/side/navigation";
 import Header from "@/components/header";
 import RecordTab from "@/components/record/record-tab";
-import useTab, { TabType } from "@/hooks/useTab";
+import useTab from "@/hooks/useTab";
 import GalleryTab from "@/components/gallery/gallery-tab";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import { useReducer } from "react";

@@ -24,6 +24,10 @@ const GalleryTab = () => {
         }
     }, [setIsLoading, setItems, query]);
 
+    useEffect(() => {
+        if (query === "") onSubmit();
+    }, [query, onSubmit]);
+
     return (
         <div className="w-full h-full bg-light relative flex justify-center items-center">
             <SideBreadCrumb content={["Dashboard", "Gallery"]} className="absolute top-4 left-4" />
