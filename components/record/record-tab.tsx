@@ -59,7 +59,7 @@ const RecordTab: React.FC<RecordTabProps> = ({
                             <h5 className="text-lg font-semibold tracking-tight">Key points</h5>
                             <p className="text-sm">{`${keypoints.join("\n")}\n`}</p>
                             <h5 className="text-lg font-semibold tracking-tight">Content</h5>
-                            <p className="text-sm leading-6 font-normal">
+                            <p className="text-sm leading-6 font-normal whitespace-pre-line">
                                 {body ? body : "Your compiled notes will appear here after you stop recording."}
                             </p>
                         </div>

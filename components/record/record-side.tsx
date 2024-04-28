@@ -36,6 +36,8 @@ const RecordSide: React.FC<RecordSideProps> = ({ transcript, resetTranscript, li
         setDesc,
         body,
         setBody,
+        keypoints,
+        setKeypoints,
     } = useNote();
 
     const { toast } = useToast();
@@ -50,6 +52,7 @@ const RecordSide: React.FC<RecordSideProps> = ({ transcript, resetTranscript, li
                 course,
                 desc,
                 body: body || transcript,
+                keypoints,
             });
             toast({
                 title: "Note saved!",
@@ -58,14 +61,15 @@ const RecordSide: React.FC<RecordSideProps> = ({ transcript, resetTranscript, li
             console.log(err);
             toast(toastErrorAction(onSave));
         }
-    }, [toast, body, desc, transcript, course, lecture, professor, quarter, title]);
+    }, [toast, body, desc, transcript, course, lecture, professor, quarter, title, keypoints]);
 
     const onCompile = useCallback(async () => {
         try {
             let { data } = await axios.post("/api/transcript-compiler/", { text: transcript });
-            let { desc, text: compiled } = data;
+            let { desc, text: compiled, keypoints } = data;
             setDesc(desc);
             setBody(compiled);
+            setKeypoints(keypoints);
             toast({
                 title: "Note compiled!",
             });
@@ -73,18 +77,22 @@ const RecordSide: React.FC<RecordSideProps> = ({ transcript, resetTranscript, li
             console.log(err);
             toast(toastErrorAction(onCompile));
         }
-    }, [toast, transcript, setBody, setDesc]);
+    }, [toast, transcript, setBody, setDesc, setKeypoints]);
 
     const onDelete = useCallback(async () => {
         try {
             dispatchRecord({ type: "disable" });
             resetTranscript();
             setBody("");
+            setKeypoints([]);
+            toast({
+                title: "Note deleted."
+            })
         } catch (err) {
             console.log(err);
             toast(toastErrorAction(onDelete));
         }
-    }, [toast, setBody, resetTranscript, dispatchRecord]);
+    }, [toast, setBody, resetTranscript, dispatchRecord, setKeypoints]);
 
     const onRecordToggle = () => {
         try {

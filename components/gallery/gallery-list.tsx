@@ -147,7 +147,7 @@ const GalleryList: React.FC<GalleryListProps> = ({ items, isLoading }) => {
                 <DialogContent className="sm:w-1/2">
                     <DialogHeader>
                         <DialogTitle>{validItemClicked ? items[itemClicked].title : "Untitled"}</DialogTitle>
-                        <DialogDescription className="pt-2">{validItemClicked ? items[itemClicked].body : "Empty"}</DialogDescription>
+                        <DialogDescription className="pt-2 whitespace-pre-line">{validItemClicked ? items[itemClicked].body : "Empty"}</DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
                         <Button
