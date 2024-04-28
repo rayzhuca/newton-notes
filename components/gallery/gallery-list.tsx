@@ -18,6 +18,7 @@ import {
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useState } from "react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 interface GalleryItem {
     title: string;
@@ -110,7 +111,7 @@ const GalleryList: React.FC<GalleryListProps> = ({ items, isLoading }) => {
                                   </TableRow>
                               ))
                         : items.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((v, i) => (
-                              <TableRow key={i}>
+                              <TableRow key={i} className="cursor-pointer">
                                   {galleryColumns.map((col, k) => (
                                       <TableCell
                                           onClick={() => {
@@ -120,7 +121,22 @@ const GalleryList: React.FC<GalleryListProps> = ({ items, isLoading }) => {
                                           key={k}
                                           className="first:pl-8 h-8"
                                       >
-                                          {transformColumn(col, v[col])}
+                                          {col === "desc" ? (
+                                              <TooltipProvider>
+                                                  <Tooltip>
+                                                      <TooltipTrigger asChild>
+                                                          <div className="max-h-24 w-30 overflow-hidden whitespace-nowrap overflow-ellipsis cursor-pointer">
+                                                              {transformColumn(col, v[col])}
+                                                          </div>
+                                                      </TooltipTrigger>
+                                                      <TooltipContent className="w-96">
+                                                          <p>{transformColumn(col, v[col])}</p>
+                                                      </TooltipContent>
+                                                  </Tooltip>
+                                              </TooltipProvider>
+                                          ) : (
+                                              <div className="max-h-24 overflow-auto">{transformColumn(col, v[col])}</div>
+                                          )}
                                       </TableCell>
                                   ))}
                               </TableRow>

@@ -14,6 +14,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
+            <head>
+                <title>Newton Notes</title>
+            </head>
             <body className={inter.className}>
                 {children}
                 <Toaster />

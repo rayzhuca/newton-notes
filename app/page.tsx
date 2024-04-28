@@ -9,7 +9,7 @@ import Link from "next/link";
 export default function Page() {
     const { data: currentUser } = useCurrentUser();
 
-    const launchLink = currentUser ? "/dashboard" : "/signup";
+    const launchLink = "/dashboard";
 
     return (
         <main className="w-full h-screen p-16">
