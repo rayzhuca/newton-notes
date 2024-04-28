@@ -35,7 +35,7 @@ const GalleryList: React.FC<GalleryListProps> = ({ items, isLoading }) => {
                 <TableHeader>
                     <TableRow>
                         {galleryColumns.map((v, i) => (
-                            <TableHead key={i} className={"first:pl-8 last:pr-8 capitalize"}>
+                            <TableHead key={i} className={"first:pl-8 last:pr-8 capitalize hover:bg-inherit"}>
                                 {v}
                             </TableHead>
                         ))}

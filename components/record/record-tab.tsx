@@ -3,15 +3,23 @@
 import { Clipboard } from "lucide-react";
 import { Button } from "../ui/button";
 import RecordSide from "./record-side";
+import { Dispatch } from "react";
 
 interface RecordTabProps {
     transcript: string;
     listening: boolean;
     resetTranscript: () => void;
     browserSupportsSpeechRecognition: boolean;
+    dispatchRecord: Dispatch<{ type: string }>;
 }
 
-const RecordTab: React.FC<RecordTabProps> = ({ transcript, listening, resetTranscript, browserSupportsSpeechRecognition }) => {
+const RecordTab: React.FC<RecordTabProps> = ({
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+    dispatchRecord,
+}) => {
     if (!browserSupportsSpeechRecognition) {
         <div className="flex items-center align-middle">
             <div className="text-2xl">Your browser does not support speech recognition. Please switch to Chrome.</div>
@@ -20,7 +28,7 @@ const RecordTab: React.FC<RecordTabProps> = ({ transcript, listening, resetTrans
 
     return (
         <div className="flex">
-            <RecordSide transcript={transcript} resetTranscript={resetTranscript} />
+            <RecordSide transcript={transcript} resetTranscript={resetTranscript} listening={listening} dispatchRecord={dispatchRecord} />
             <div className="h-full grow-[2] py-4 px-32 flex flex-col gap-4 relative">
                 <div className="grow-[3] rounded-md bg-background relative flex flex-col overflow-auto">
                     <div className="flex justify-between items-center">
