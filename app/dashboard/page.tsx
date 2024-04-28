@@ -4,8 +4,12 @@ import Navigation from "@/components/side/navigation";
 import Header from "@/components/header";
 import RecordTab from "@/components/record/record-tab";
 import useTab, { TabType } from "@/hooks/useTab";
+import GalleryTab from "@/components/gallery/gallery-tab";
 
-const tabMap: Map<TabType, React.FC> = new Map([["record", RecordTab]]);
+const tabMap: Map<TabType, React.FC> = new Map([
+    ["record", RecordTab],
+    ["gallery", GalleryTab],
+]);
 
 const DashboardView: React.FC = () => {
     const { tab } = useTab();
