@@ -1,5 +1,6 @@
 "use client";
 
+import PlaneSculpt from "@/components/index/PlaneSculpt";
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import useCurrentUser from "@/hooks/useCurrentUser";
@@ -21,9 +22,7 @@ export default function Page() {
                 </Button>
             </section>
             <h2 className="text-xl absolute top-[calc(69%-1.25rem)] align-top">Take notes with LLMs</h2>
-            <aside className="absolute h-1/2 w-[29%] top-[19%] right-24 flex items-center">
-                <div className="bg-border rounded-md h-full w-full"></div>
-            </aside>
+            <PlaneSculpt />
         </main>
     );
 }
