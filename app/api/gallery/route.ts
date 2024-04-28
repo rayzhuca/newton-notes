@@ -1,17 +1,28 @@
-import prisma from "@/libs/prismadb";
+import prismadb from "@/libs/prismadb";
 
 export async function POST(req: Request) {
     try {
-        // const { title, lecture, quarter, professor, course, body } = await req.json();
-        const gallery = await prisma.note.findMany();
-        console.log(gallery);
+        let { query } = await req.json();
 
-        return Response.json(gallery, {
+        if (!query) {
+            query = "";
+        }
+
+        const notes = await prismadb.note.findMany({
+            where: {
+                title: {
+                    contains: query,
+                    mode: "insensitive",
+                },
+            },
+        });
+
+        return Response.json(notes, {
             status: 200,
         });
     } catch (error) {
         console.log(error);
-        return new Response(null, {
+        return Response.json(null, {
             status: 400,
         });
     }

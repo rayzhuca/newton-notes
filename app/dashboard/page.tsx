@@ -5,22 +5,25 @@ import Header from "@/components/header";
 import RecordTab from "@/components/record/record-tab";
 import useTab, { TabType } from "@/hooks/useTab";
 import GalleryTab from "@/components/gallery/gallery-tab";
-
-const tabMap: Map<TabType, React.FC> = new Map([
-    ["record", RecordTab],
-    ["gallery", GalleryTab],
-]);
+import { useSpeechRecognition } from "react-speech-recognition";
 
 const DashboardView: React.FC = () => {
     const { tab } = useTab();
-
-    const Tab = tabMap.get(tab) || (() => <></>);
+    const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
 
     return (
         <div className="flex h-screen w-full pl-[56px] pt-[56px]">
             <Header />
             <Navigation />
-            <Tab />
+            {tab === "record" && (
+                <RecordTab
+                    transcript={transcript}
+                    listening={listening}
+                    resetTranscript={resetTranscript}
+                    browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
+                />
+            )}
+            {tab === "gallery" && <GalleryTab />}
         </div>
     );
 };

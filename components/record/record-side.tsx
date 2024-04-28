@@ -8,15 +8,31 @@ import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 import { Input } from "../ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "../ui/command";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { cn } from "@/libs/utils";
 import SideBreadCrumb from "../side/breadcrumb";
+import SpeechRecognition from "react-speech-recognition";
 
 const languages = [{ value: "english", label: "English" }];
 
-const RecordSide: React.FC = () => {
+interface RecordSideProps {
+    transcript: string;
+    resetTranscript: () => void;
+}
+
+const recordReducer = (record: boolean, action: { type: string }) => {
+    if (!record) {
+        SpeechRecognition.startListening({ continuous: true });
+    } else {
+        SpeechRecognition.stopListening();
+    }
+    return !record;
+};
+
+const RecordSide: React.FC<RecordSideProps> = () => {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState("");
+    const [record, dispatchRecord] = useReducer(recordReducer, false);
 
     return (
         <section className="h-full p-4 pr-6 flex flex-col gap-6 border-r">
@@ -24,8 +40,8 @@ const RecordSide: React.FC = () => {
             <fieldset className="flex gap-6 rounded-lg border p-4">
                 <legend className="-ml-1 px-1 text-sm font-medium">Control</legend>
                 <div className="w-full flex flex-col gap-4">
-                    <Button>
-                        Record
+                    <Button onClick={() => dispatchRecord({ type: "toggle" })}>
+                        {record ? "Stop" : "Record"}
                         <Mic className="ml-2 size-4" />
                     </Button>
                     <div className="grid gap-3">
