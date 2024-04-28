@@ -15,7 +15,7 @@ const Header: React.FC = () => {
                         <Logo />
                     </Link>
                 </div>
-                <h1 className="text-xl font-semibold pl-4">Yippee</h1>
+                <h1 className="text-xl font-semibold pl-4">Newton Notes</h1>
             </div>
             <div className="flex flex-row items-center gap-1 mr-4">
                 <Button variant="outline" size="sm" className="gap-1.5 text-sm">
