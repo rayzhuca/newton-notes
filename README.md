@@ -39,7 +39,7 @@ NEXTAUTH_URL_INTERNAL=...
 OPENAI_API_KEY=...
 ```
 
-Then, run the development server:
+Then, install the npm packages via ``npm i`` and run the development server:
 
 ```bash
 npm run dev
